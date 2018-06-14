@@ -19,6 +19,9 @@ cd $DIR
 cd /etc/logstash/conf.d/
 rm *
 ln -s ../conf.d.available/*.conf ./
+#files that we are going to replace
+rm 1004_preprocess_syslog_types.conf
+rm 6200_firewall_fortinet.conf
 ln -s $DIR/logstash/*.conf ./
 #stuff we aren't going to use
 rm 1029_preprocess_esxi.conf
