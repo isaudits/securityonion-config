@@ -19,14 +19,24 @@ Stack implementation on Security Onion. This may or may not work in your envirom
 and we do not intend to provide support for this project other than providing it
 to the public for reference.
 
-A setup script is included which symlinks our custom config files into the appropriate
-directories. THIS SCRIPT WILL DELETE EXISTING CUSTOM CONFIG FILES IN THESE LOCATIONS!!!
-
 Modifications include:
 - Fortigate firewalls do not work out of the box with Security Onion due to not
 using a standard syslog format
     - Implementation of a custom syslog listener for Fortigate firewalls on port 5001
     - Corrected parsing of Fortigate syslogs
+
+A setup script is included which symlinks our custom config files into the appropriate
+directories. THIS SCRIPT WILL DELETE EXISTING CUSTOM CONFIG FILES IN THESE LOCATIONS!!!
+
+Alternatively, you can manually copy or link these files into the appropriate directories:
+- Logstash: /etc/logstash/custom/
+- Syslog-ng: /etc/syslog-ng/conf.d/
+
+If you elect to go the manual route, you'll need to include the custom syslog-ng files
+by adding the following line to the bottom of /etc/syslog-ng/syslog-ng.conf:
+'''@include "/etc/syslog-ng/conf.d/*.conf"'''
+and also configure the firewall to allow inbound traffic for the custom listeners:
+'''sudo ufw allow 5001'''
 
 -------------------------------------------------------------------------------
 
