@@ -34,9 +34,9 @@ Alternatively, you can manually copy or link these files into the appropriate di
 
 If you elect to go the manual route, you'll need to include the custom syslog-ng files
 by adding the following line to the bottom of /etc/syslog-ng/syslog-ng.conf:
-'''@include "/etc/syslog-ng/conf.d/*.conf"'''
+```@include "/etc/syslog-ng/conf.d/*.conf"```
 and also configure the firewall to allow inbound traffic for the custom listeners:
-'''sudo ufw allow 5001'''
+```sudo ufw allow 5001```
 
 -------------------------------------------------------------------------------
 
