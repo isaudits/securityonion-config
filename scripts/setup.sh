@@ -15,15 +15,27 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )/.." && pwd )"
 cd $DIR
 
-#Clean up existing logstash symlinks
+CONFIG="/etc/logstash/custom"
+if [ -d "$CONFIG" ]; then 
+    if [ -L "$CONFIG" ]; then 
+        echo "Logstash custom config directory already symlinked; moving on..."
+    else
+        echo "Symlinking custom logstash config files..."
+        rmdir "$CONFIG"
+        ln -s "$DIR/logstash" "$CONFIG"
+    fi
+fi
+
+echo "Relinking existing logstash config files..."
 cd /etc/logstash/conf.d/
 rm *
 ln -s ../conf.d.available/*.conf ./
-#files that we are going to replace
+
+echo "Removing links to unused logstash config files..."
+#Files we are replacing with custom ones
 rm 1004_preprocess_syslog_types.conf
 rm 6200_firewall_fortinet.conf
-ln -s $DIR/logstash/*.conf ./
-#stuff we aren't going to use
+#Other unused ones
 rm 1029_preprocess_esxi.conf
 rm 1030_preprocess_greensql.conf
 rm 1032_preprocess_mcafee.conf
@@ -35,15 +47,22 @@ rm 9030_output_greensql.conf
 rm 9032_output_mcafee.conf
 rm 9998_output_test_data.conf
 
-#Delete custom syslog-ng configs and symlink to this repo
-rm /etc/syslog-ng/conf.d/*
-ln -s $DIR/syslog-ng/* /etc/syslog-ng/conf.d/
+CONFIG="/etc/syslog-ng/conf.d"
+if [ -d "$CONFIG" ]; then 
+    if [ -L "$CONFIG" ]; then 
+        echo "Syslog-ng custom config directory already symlinked; moving on..."
+    else
+        echo "Symlinking custom Syslog-ng config files..."
+        rmdir "$CONFIG"
+        ln -s "$DIR/syslog-ng" "$CONFIG"
+    fi
+fi
 
 #Add include line for custom syslog-ng configs if not present
 LINE='@include "/etc/syslog-ng/conf.d/*.conf"'
 FILE="/etc/syslog-ng/syslog-ng.conf"
 grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
 
-#restart services
+echo "Restarting services..."
 service syslog-ng restart
 so-elastic-restart
