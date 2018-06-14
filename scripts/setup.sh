@@ -63,6 +63,9 @@ LINE='@include "/etc/syslog-ng/conf.d/*.conf"'
 FILE="/etc/syslog-ng/syslog-ng.conf"
 grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
 
+echo "Adding firewall rules..."
+ufw allow 5001
+
 echo "Restarting services..."
 service syslog-ng restart
 so-elastic-restart
