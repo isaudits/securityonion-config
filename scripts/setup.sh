@@ -36,15 +36,20 @@ echo "Removing links to unused logstash config files..."
 rm 1004_preprocess_syslog_types.conf
 rm 6200_firewall_fortinet.conf
 #Other unused ones
+rm 0002_input_windows_json.conf
 rm 1029_preprocess_esxi.conf
 rm 1030_preprocess_greensql.conf
 rm 1032_preprocess_mcafee.conf
 rm 1998_test_data.conf
 rm 6101_switch_brocade.conf
+rm 6300_windows.conf
+rm 6301_dns_windows.conf
 rm 9001_output_switch.conf
 rm 9029_output_esxi.conf
 rm 9030_output_greensql.conf
 rm 9032_output_mcafee.conf
+rm 9300_output_windows.conf
+rm 9301_output_dns_windows.conf
 rm 9998_output_test_data.conf
 
 CONFIG="/etc/syslog-ng/conf.d"
